@@ -8,12 +8,6 @@ CREATE TABLE `roles`(
     PRIMARY KEY(`role_id`)
 );
 
-CREATE TABLE `languages`(
-	`language_id` INT NOT NULL AUTO_INCREMENT,
-    `language` VARCHAR(255) NOT NULL,
-    PRIMARY KEY(`language_id`)
-);
-
 CREATE TABLE `categories`(
 	`category_id` INT NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(255) NOT NULL,
@@ -30,10 +24,8 @@ CREATE TABLE `users`(
     `birthDate` DATE,
 	`profile_picture` VARCHAR(255),
     `role_id` INT NOT NULL,
-    `language_id` INT,
     PRIMARY KEY(`user_id`),
-    FOREIGN KEY(`role_id`) REFERENCES `roles`(`role_id`),
-    FOREIGN KEY(`language_id`) REFERENCES `languages`(`language_id`)
+    FOREIGN KEY(`role_id`) REFERENCES `roles`(`role_id`)
 );
 
 CREATE TABLE `memorandums`(
@@ -108,27 +100,27 @@ INSERT INTO categories (category) VALUES ('Desarrollo web');
 INSERT INTO categories (category) VALUES ('Metodologias de trabajo');
 INSERT INTO categories (category) VALUES ('Pautas de conducta');
 
-INSERT INTO users (name, email, password, phoneNumber, joinedAt, birthDate, profile_picture, role_id, language_id) VALUES 
-('Administrador Awaq', 'admin@awaq.com', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 1, 2),
-('Miguel Mendoza Jaidar', 'a01234354@tec.mx', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3, 2),
-('Miguel Mendoza Jaidar', 'miguelmendozaj20@gmail.com', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3, 2),
-('Ana María Ruiz', 'ana.ruiz@example.com', 'SecurePassword1', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3, 2),
-('Carlos Jiménez López', 'carlos.jimenez@example.com', 'SecurePassword2', 5567982346, '2024-04-05', '1988-08-20', 'https://badgerautomation.com/wp-content/uploads/2019/01/person4.jpg', 3, 2),
-('Lucía Fernández Vidal', 'lucia.fernandez@example.com', 'SecurePassword3', 5567892347, '2024-04-10', '1992-03-25', 'https://www.fiqma.org/wp-content/uploads/2019/01/person5.jpg', 2, 1),
-('Jorge Martín Gómez', 'jorge.martin@example.com', 'SecurePassword4', 5567892348, '2024-04-15', '1985-12-30', 'https://badgerautomation.com/wp-content/uploads/2019/01/person3.jpg', 2, 1),
-('Elena Núñez Castillo', 'elena.nunez@example.com', 'SecurePassword5', 5567892349, '2024-04-20', '1995-07-10','https://static.cegos.es/content/uploads/2023/03/01165224/GettyImages-1300321639.jpg', 2, 2),
-('Raúl Molina Santos', 'raul.molina@example.com', 'SecurePassword6', 5567892350, '2024-04-25', '1991-01-18','https://www.fiqma.org/wp-content/uploads/2019/01/person6.jpg', 2, 1);
+INSERT INTO users (name, email, password, phoneNumber, joinedAt, birthDate, profile_picture, role_id) VALUES 
+('Administrador Awaq', 'admin@awaq.com', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 1),
+('Miguel Mendoza Jaidar', 'a01234354@tec.mx', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3),
+('Miguel Mendoza Jaidar', 'miguelmendozaj20@gmail.com', '123', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3),
+('Ana María Ruiz', 'ana.ruiz@example.com', 'SecurePassword1', 5567892345, '2024-04-01', '1990-06-15', 'https://badgerautomation.com/wp-content/uploads/2019/01/person2.jpg', 3),
+('Carlos Jiménez López', 'carlos.jimenez@example.com', 'SecurePassword2', 5567982346, '2024-04-05', '1988-08-20', 'https://badgerautomation.com/wp-content/uploads/2019/01/person4.jpg', 3),
+('Lucía Fernández Vidal', 'lucia.fernandez@example.com', 'SecurePassword3', 5567892347, '2024-04-10', '1992-03-25', 'https://www.fiqma.org/wp-content/uploads/2019/01/person5.jpg', 2),
+('Jorge Martín Gómez', 'jorge.martin@example.com', 'SecurePassword4', 5567892348, '2024-04-15', '1985-12-30', 'https://badgerautomation.com/wp-content/uploads/2019/01/person3.jpg', 2),
+('Elena Núñez Castillo', 'elena.nunez@example.com', 'SecurePassword5', 5567892349, '2024-04-20', '1995-07-10','https://static.cegos.es/content/uploads/2023/03/01165224/GettyImages-1300321639.jpg', 2),
+('Raúl Molina Santos', 'raul.molina@example.com', 'SecurePassword6', 5567892350, '2024-04-25', '1991-01-18','https://www.fiqma.org/wp-content/uploads/2019/01/person6.jpg', 2);
 
-INSERT INTO users (name, email, password, phoneNumber, joinedAt, birthDate, role_id, language_id) VALUES 
-('Sofía Guerrero Salazar', 'sofia.guerrero@example.com', 'SecurePassword7', '5567892360', '2024-04-30', '1993-05-05', 3, 2),
-('Miguel Ángel Torres', 'miguel.torres@example.com', 'SecurePassword8', '5567892361', '2024-05-05', '1989-09-15', 3, 1),
-('Isabel Medina Hernández', 'isabel.medina@example.com', 'SecurePassword9', '5567892362', '2024-05-10', '1994-02-20', 3, 1),
-('Diego Alonso Navarro', 'diego.navarro@example.com', 'SecurePassword10', '5567892363', '2024-05-15', '1990-11-30', 2, 2),
-('Carmen Reyes Martínez', 'carmen.reyes@example.com', 'SecurePassword11', '5567892364', '2024-05-20', '1992-07-08', 2, 1),
-('Felipe Gómez Castillo', 'felipe.gomez@example.com', 'SecurePassword12', '5567892365', '2024-05-25', '1988-03-14', 2, 2),
-('Laura Jiménez Morales', 'laura.jimenez@example.com', 'SecurePassword13', '5567892366', '2024-05-30', '1995-08-25', 2, 1),
-('Oscar Ruiz Díaz', 'oscar.ruiz@example.com', 'SecurePassword14', '5567892367', '2024-06-04', '1987-12-05', 3, 2),
-('Marta Sánchez López', 'marta.sanchez@example.com', 'SecurePassword15', '5567892368', '2024-06-09', '1991-01-20', 3, 1);
+INSERT INTO users (name, email, password, phoneNumber, joinedAt, birthDate, role_id) VALUES 
+('Sofía Guerrero Salazar', 'sofia.guerrero@example.com', 'SecurePassword7', '5567892360', '2024-04-30', '1993-05-05', 3),
+('Miguel Ángel Torres', 'miguel.torres@example.com', 'SecurePassword8', '5567892361', '2024-05-05', '1989-09-15', 3),
+('Isabel Medina Hernández', 'isabel.medina@example.com', 'SecurePassword9', '5567892362', '2024-05-10', '1994-02-20', 3),
+('Diego Alonso Navarro', 'diego.navarro@example.com', 'SecurePassword10', '5567892363', '2024-05-15', '1990-11-30', 2),
+('Carmen Reyes Martínez', 'carmen.reyes@example.com', 'SecurePassword11', '5567892364', '2024-05-20', '1992-07-08', 2),
+('Felipe Gómez Castillo', 'felipe.gomez@example.com', 'SecurePassword12', '5567892365', '2024-05-25', '1988-03-14', 2),
+('Laura Jiménez Morales', 'laura.jimenez@example.com', 'SecurePassword13', '5567892366', '2024-05-30', '1995-08-25', 2),
+('Oscar Ruiz Díaz', 'oscar.ruiz@example.com', 'SecurePassword14', '5567892367', '2024-06-04', '1987-12-05', 3),
+('Marta Sánchez López', 'marta.sanchez@example.com', 'SecurePassword15', '5567892368', '2024-06-09', '1991-01-20', 3);
 
 --  Memorandum
 INSERT INTO memorandums (html, css, result, explanation) VALUES 
