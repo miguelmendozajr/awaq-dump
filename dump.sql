@@ -128,7 +128,7 @@ INSERT INTO user_memorandum (user_id, memorandum_id, solved) VALUES
 (4, 1, 1), (4, 2, 1), (4, 3, 1),
 (5, 1, 1), (5, 2, 1), (5, 3, 1),
 (6, 1, 1), (6, 2, 0), (6, 3, 1),
-(7, 1, 0), (7, 2, 1), (7, 3, 0),
+(7, 1, 1), (7, 2, 1), (7, 3, 0),
 (8, 1, 1), (8, 2, 0), (8, 3, 1),
 (9, 1, 0), (9, 2, 1), (9, 3, 0),
 (10, 1, 1), (10, 2, 0), (10, 3, 1),
@@ -463,3 +463,128 @@ END //
 DELIMITER ;
 
 call getOverallProblemSolvingPercentage();
+
+
+
+SELECT m.memorandum_id, m.html, m.css, m.result, m.explanation
+FROM memorandums m
+LEFT JOIN user_memorandum um ON m.memorandum_id = um.memorandum_id AND um.user_id = 8
+WHERE um.user_id IS NULL OR um.solved = 0;
+
+
+DELIMITER //
+CREATE PROCEDURE getTediQuestion (IN user_id INT)
+BEGIN
+  DECLARE result2 VARCHAR(255);
+
+  SELECT m.*,
+    @result2 := (SELECT m2.result
+                  FROM memorandums m2
+                  WHERE m2.memorandum_id <> m.memorandum_id
+                  ORDER BY RAND()
+                  LIMIT 1) AS result2,
+    (SELECT m3.result
+     FROM memorandums m3
+     WHERE m3.memorandum_id <> m.memorandum_id
+       AND m3.result <> @result2
+     ORDER BY RAND()
+     LIMIT 1) AS result3
+  FROM memorandums m
+  LEFT JOIN user_memorandum um ON um.memorandum_id = m.memorandum_id AND um.user_id = user_id
+  WHERE um.user_id IS NULL OR um.solved = 0
+  LIMIT 1;
+END //
+DELIMITER ;
+
+
+call getTediQuestion(6);
+
+
+DELIMITER //
+CREATE PROCEDURE getSecurityQuestion (IN user_id INT)
+BEGIN
+	SELECT tf.true_false_id, tf.text, tf.isCorrect, tf.explanation
+	FROM trueFalseQuestions tf
+	LEFT JOIN user_trueFalse utf ON tf.true_false_id = utf.true_false_id AND utf.user_id = user_id
+	WHERE utf.user_id IS NULL OR utf.solved = 0
+    ORDER BY RAND()
+	LIMIT 1;
+END //
+DELIMITER ; 
+
+CALL getSecurityQuestion(8);
+
+
+DELIMITER //
+CREATE PROCEDURE getCommunicationQuestion (IN user_id INT)
+BEGIN
+	SELECT q.question_id, q.question, q.correctAnswer, q.answer2, q.answer3, q.answer4, q.explanation
+	FROM questions q
+	LEFT JOIN user_question uq ON q.question_id = uq.question_id AND uq.user_id = user_id
+	WHERE q.category_id = 3 AND (uq.user_id IS NULL OR uq.solved = 0)
+    ORDER BY RAND()
+	LIMIT 1;
+END //
+DELIMITER ; 
+
+CALL getCommunicationQuestion(6);
+
+DELIMITER //
+CREATE PROCEDURE getEthicQuestion (IN user_id INT)
+BEGIN
+	SELECT q.question_id, q.question, q.correctAnswer, q.answer2, q.answer3, q.answer4, q.explanation
+	FROM questions q
+	LEFT JOIN user_question uq ON q.question_id = uq.question_id AND uq.user_id = user_id
+	WHERE q.category_id = 4 AND (uq.user_id IS NULL OR uq.solved = 0)
+    ORDER BY RAND()
+	LIMIT 1;
+END //
+DELIMITER ; 
+
+
+DELIMITER //
+CREATE PROCEDURE answerSecurityQuestion (
+    IN p_user_id INT,
+    IN p_true_false_id INT,
+    IN p_solved INT
+)
+BEGIN
+    INSERT INTO user_trueFalse (user_id, true_false_id, solved)
+    VALUES (p_user_id, p_true_false_id, p_solved)
+    ON DUPLICATE KEY UPDATE solved = p_solved;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE answerQuestion (
+    IN p_user_id INT,
+    IN p_question_id INT,
+    IN p_solved INT
+)
+BEGIN
+    INSERT INTO user_question (user_id, question_id, solved)
+    VALUES (p_user_id, p_question_id, p_solved)
+    ON DUPLICATE KEY UPDATE solved = p_solved;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE answerTediQuestion (
+    IN p_user_id INT,
+    IN p_memorandum_id INT,
+    IN p_solved INT
+)
+BEGIN
+    INSERT INTO user_memorandum (user_id, memorandum_id, solved)
+    VALUES (p_user_id, p_memorandum_id, p_solved)
+    ON DUPLICATE KEY UPDATE solved = p_solved;
+END //
+DELIMITER ;
+
+SELECT * from users join user_trueFalse On users.user_id = user_trueFalse.user_id WHERE users.user_id = 16;
+
+
